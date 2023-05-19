@@ -13,11 +13,12 @@ header{
     width: 50px;    
     margin: 10px;
 }
-/* .logo{
+a{
     text-decoration: none;
-} */
+}
 
 .login, .sign-up{    
+    float: right;
     background-color: transparent;
     border-color: #0079D3;
     color: #0079D3;

@@ -5,15 +5,14 @@
 .login-failed{
     text-align: center;
     margin: auto;
-    margin-top: 10px;
-    border: 2px solid black;
-    width: 65%;    
-    background-color: red;
+    margin-top: 40px;
+    border: 2px solid red;
+    border-radius: 2%;
+    width: 65%;   
 }
 
 .login-failed-text{
     text-align: center;
     margin-top: 5px;
     font-weight: bold;    
-    color: aliceblue;
 }

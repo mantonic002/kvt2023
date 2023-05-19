@@ -1,0 +1,23 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<section class="content-item" id="posts">
+    <div class="container">   
+    	<div class="row">
+        <div class="col-sm-8" *ngFor="let post of posts">   
+          <div class="media">
+            <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
+            <div class="media-body">
+                <h4 class="media-heading">{{post?.user?.username}}</h4>
+                <p>{{post?.content}}</p>
+                <ul class="list-unstyled list-inline media-detail pull-left">
+                    <li><i class="fa fa-calendar"></i>{{post.creationDate}}</li>
+                </ul>
+                <!-- <ul class="list-unstyled list-inline media-detail pull-right">
+                    <li class=""><a href="">Like</a></li>
+                    <li class=""><a href="">Comment</a></li>
+                </ul> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>

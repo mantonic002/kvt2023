@@ -1,9 +1,13 @@
-import { Router } from '@angular/router';
-import { AuthService } from './../shared/auth.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import { AuthService } from 'src/app/services';
+import { UserService } from '../../services/user.service';
+import { Subject } from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import { SignupRequestPayload } from './signup-request.payload';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-signup',
@@ -12,43 +16,63 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SignupComponent implements OnInit{
 
-  signupRequestPayload: SignupRequestPayload;
-  signupForm!: FormGroup;
-  
-  constructor(private authService: AuthService, private router: Router, private tostr: ToastrService){
-    this.signupRequestPayload = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      username: '',
-      password: ''
-    };
+  title = 'Sign up';
+  form!: FormGroup;
+
+  submitted = false;
+
+  returnUrl!: string;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder
+  ) {
+
   }
 
-  ngOnInit(){
-    this.signupForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      username: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required)
-    })
+  ngOnInit() {
+    this.route.params
+      .pipe(takeUntil(this.ngUnsubscribe))
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.form = this.formBuilder.group({
+      username: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
+      firstName: [''],
+      lastName: [''],
+      email: ['']
+    });
   }
 
-  signup(){
-    this.signupRequestPayload.firstName = this.signupForm.get('firstName')?.value;
-    this.signupRequestPayload.lastName = this.signupForm.get('lastName')?.value;
-    this.signupRequestPayload.email = this.signupForm.get('email')?.value;
-    this.signupRequestPayload.username = this.signupForm.get('username')?.value;
-    this.signupRequestPayload.password = this.signupForm.get('password')?.value;
-
-    this.authService.signup(this.signupRequestPayload)
-      .subscribe(() => {
-        this.router.navigate(['/login'],
-         { queryParams: { registered: 'true' } });
-      }, () => {
-        this.tostr.error('Registration failed, try again!')
-      }
-      );
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
+
+  onSubmit() {
+    /**
+     * Innocent until proven guilty
+     */
+    this.submitted = true;
+
+    this.authService.signup(this.form.value)
+      .subscribe(data => {
+        console.log(data);
+        this.authService.login(this.form.value).subscribe(() => {
+          this.userService.getMyInfo().subscribe();
+        });
+        this.router.navigate([this.returnUrl]);
+      },
+        error => {
+          this.submitted = false;
+          console.log('Sign up error');
+        });
+
+  }
+
+
 }

@@ -1,0 +1,128 @@
+body{margin-top:20px;}
+
+.content-item {
+    margin-top: 50px;
+    padding:30px 0;
+	background-color:#FFFFFF;
+}
+
+.content-item.grey {
+	background-color:#F0F0F0;
+	padding:50px 0;
+	height:100%;
+}
+
+.content-item h2 {
+	font-weight:700;
+	font-size:35px;
+	line-height:45px;
+	text-transform:uppercase;
+	margin:20px 0;
+}
+
+.content-item h3 {
+	font-weight:400;
+	font-size:20px;
+	color:#555555;
+	margin:10px 0 15px;
+	padding:0;
+}
+
+.content-headline {
+	height:1px;
+	text-align:center;
+	margin:20px 0 70px;
+}
+
+.content-headline h2 {
+	background-color:#FFFFFF;
+	display:inline-block;
+	margin:-20px auto 0;
+	padding:0 20px;
+}
+
+.grey .content-headline h2 {
+	background-color:#F0F0F0;
+}
+
+.content-headline h3 {
+	font-size:14px;
+	color:#AAAAAA;
+	display:block;
+}
+
+
+#posts {
+    box-shadow: 0 -1px 6px 1px rgba(0,0,0,0.1);
+	background-color:#FFFFFF;
+}
+
+#posts form {
+	margin-bottom:30px;
+}
+
+#posts .btn {
+	margin-top:7px;
+}
+
+#posts form fieldset {
+	clear:both;
+}
+
+#posts form textarea {
+	height:100px;
+}
+
+#posts .media {
+	border-top:1px dashed #DDDDDD;
+	padding:20px 0;
+	margin:0;
+}
+
+#posts .media > .pull-left {
+    margin-right:20px;
+}
+
+#posts .media img {
+	max-width:100px;
+}
+
+#posts .media h4 {
+	margin:0 0 10px;
+}
+
+#posts .media h4 span {
+	font-size:14px;
+	float:right;
+	color:#999999;
+}
+
+#posts .media p {
+	margin-bottom:15px;
+	text-align:justify;
+}
+
+#posts .media-detail {
+	margin:0;
+}
+
+#posts .media-detail li {
+	color:#AAAAAA;
+	font-size:12px;
+	padding-right: 10px;
+	font-weight:600;
+}
+
+#posts .media-detail a:hover {
+	text-decoration:underline;
+}
+
+#posts .media-detail li:last-child {
+	padding-right:0;
+}
+
+#posts .media-detail li i {
+	color:#666666;
+	font-size:15px;
+	margin-right:10px;
+}
