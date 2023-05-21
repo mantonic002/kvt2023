@@ -1,6 +1,14 @@
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
 <section class="content-item" id="posts">
     <div class="container">   
+      <h3>New post:</h3>
+      <form #addForm="ngForm" class="form" (ngSubmit)="save()">
+        <div class="form-group">
+          <label for="content">Whats on your mind:</label>
+          <input class="form-control" id="content" name="content" [(ngModel)]="newPost.content"/>
+        </div>
+        <input class="btn btn-primary pull-right" type="submit" value="Add"/>
+      </form>
     	<div class="row">
         <div class="col-sm-8" *ngFor="let post of posts">   
           <div class="media">
@@ -11,10 +19,12 @@
                 <ul class="list-unstyled list-inline media-detail pull-left">
                     <li><i class="fa fa-calendar"></i>{{post.creationDate}}</li>
                 </ul>
-                <!-- <ul class="list-unstyled list-inline media-detail pull-right">
-                    <li class=""><a href="">Like</a></li>
-                    <li class=""><a href="">Comment</a></li>
-                </ul> -->
+                <ul class="list-unstyled list-inline media-detail pull-right">
+                    <li class="">                        
+                      <a (click)="onDelete(post.id)" class="btn btn-primary" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                    </li>
+                    <!-- <li class=""><a href="">Comment</a></li> -->
+                </ul>
             </div>
           </div>
         </div>

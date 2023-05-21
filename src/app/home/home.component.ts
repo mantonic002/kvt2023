@@ -1,8 +1,11 @@
+import { UserService } from '../services';
 import { PostService } from '../services/post.service';
 import { Component, OnInit } from '@angular/core';
 import { PostModel } from '../services/post-model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { UserModel } from '../services/user-model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -11,13 +14,19 @@ import { DatePipe } from '@angular/common';
 })
 export class HomeComponent implements OnInit{
 
+  newPost: any;
   posts!: PostModel[];
   datepipe: DatePipe = new DatePipe('en-US');
-  constructor(private postService: PostService){
+  constructor(private postService: PostService, private userService: UserService){
   }
 
   ngOnInit(): void {
     this.getPosts();
+    this.newPost={
+      content: '',
+      user: null,
+      creationDate: null
+    }
   }
 
   public formatDate(date: Date): string {
@@ -29,6 +38,29 @@ export class HomeComponent implements OnInit{
       return '';
     }
   }
+
+  save(){
+    this.newPost.date = new Date();
+    this.newPost.user = this.userService.currentUser;
+
+    this.postService.addPost(this.newPost).subscribe(response => {
+      this.getPosts();
+    },
+    (error: HttpErrorResponse) => {
+      alert(error.message);
+
+    });
+  }
+
+  onDelete(postId: number) {
+    this.postService.deletePost(postId).subscribe(() => {
+      this.getPosts();
+    },
+    (error: HttpErrorResponse) => {
+      alert(error.message);
+    });
+  }
+
 
   getPosts() {
     this.postService.getAllPosts().subscribe(

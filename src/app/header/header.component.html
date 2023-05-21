@@ -8,8 +8,10 @@
             </a>
         </div>
         <div class="flex-grow-1 float-right">
-            <a routerLink="/sign-up" class="sign-up mr-2">Sign-up</a>
-            <a routerLink="/login" class="login mr-2">Login</a>
+            <a *ngIf="!hasSignedIn()" routerLink="/sign-up" class="sign-up mr-2">Sign-up</a>
+            <a *ngIf="!hasSignedIn()" routerLink="/login" class="login mr-2">Login</a>
+            <a *ngIf="hasSignedIn()" (click)="logout()" class="sign-up mr-2">Sign-out</a>
+            <a *ngIf="hasSignedIn()" class="sign-up mr-2" routerLink="/profile" data-placement="top" data-original-title="Profile"><i class="fa fa-user" aria-hidden="true"></i></a>
         </div>
     </nav>
 </header>

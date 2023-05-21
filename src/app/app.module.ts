@@ -19,6 +19,7 @@ import { AuthService } from './services';
 import {UserService} from './services';
 import {ConfigService} from './services';
 import { TokenInterceptor } from './services/interceptor/TokenInterceptor';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { TokenInterceptor } from './services/interceptor/TokenInterceptor';
     HeaderComponent,
     SignupComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

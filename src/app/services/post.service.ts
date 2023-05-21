@@ -19,7 +19,7 @@ export class PostService {
     return this.apiService.get(this.config.posts_url);
   }
 
-  public addPost(post: PostModel): Observable<PostModel> {
+  public addPost(post: any): Observable<any> {
     return this.apiService.post(this.config.add_post_url, post);
   }
 
@@ -28,6 +28,6 @@ export class PostService {
   }
 
   public deletePost(postId: number): Observable<void> {
-    return this.apiService.delete(`${this.config.add_post_url}/${postId}`);
+    return this.apiService.delete(`${this.config.delete_post_url}/${postId}`);
   }
 }
