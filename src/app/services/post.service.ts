@@ -1,18 +1,22 @@
-import { ConfigService, ApiService } from './';
+import { ConfigService, ApiService, UserService } from './';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PostModel } from './post-model';
+import { PostModel, ReactionModel, CommentModel } from './post-model';
 import { Router } from '@angular/router';
+import { UserModel } from './user-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
+  user: UserModel;
+
   constructor(
     private apiService: ApiService,
     private config: ConfigService,
+    private userService: UserService,
   ) {}
 
   public getAllPosts(): Observable<PostModel[]> {
@@ -30,4 +34,18 @@ export class PostService {
   public deletePost(postId: number): Observable<void> {
     return this.apiService.delete(`${this.config.delete_post_url}/${postId}`);
   }
+
+  public addPostReaction(postId: number, reactionData: ReactionModel): Observable<any> {
+    return this.apiService.post(`${this.config.add_post_reaction_url}/${postId}`, reactionData);
+  }
+  
+  public addCommentReaction(commentId: number, reactionData: ReactionModel): Observable<any> {
+    return this.apiService.post(`${this.config.add_comment_reaction_url}/${commentId}`, reactionData);
+  }
+  
+  public addComment(postId: number, comment: CommentModel): Observable<any> {
+    return this.apiService.post(`${this.config.add_comment_url}/${postId}`, comment);
+  }
+  
+  
 }

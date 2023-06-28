@@ -20,6 +20,8 @@ import {UserService} from './services';
 import {ConfigService} from './services';
 import { TokenInterceptor } from './services/interceptor/TokenInterceptor';
 import { ProfileComponent } from './profile/profile.component';
+import { GroupPostsComponent } from './group-posts/group-posts.component';
+import { GroupListComponent } from './group-list/group-list.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ProfileComponent } from './profile/profile.component';
     SignupComponent,
     LoginComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    GroupPostsComponent,
+    GroupListComponent
   ],
   imports: [
     BrowserModule,

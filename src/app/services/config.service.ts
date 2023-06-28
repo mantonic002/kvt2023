@@ -26,6 +26,19 @@ export class ConfigService {
     return this._signup_url;
   }
 
+  private _group_url = this._api_url + '/group';
+
+  get group_url(): string {
+    return this._group_url;
+  }
+
+  private _add_post_to_group = this._group_url + '/add_post';
+
+  get add_post_to_group(): string {
+    return this._add_post_to_group;
+  }
+
+
   private _post_url = this._api_url + '/post';
 
   private _posts_url = this._post_url + '/all';
@@ -63,11 +76,24 @@ export class ConfigService {
     return this._users_url;
   }
 
-//   private _club_url = this._api_url + '/clubs';
+  private _add_post_reaction_url = this._post_url + '/add_reaction';
 
-//   get club_url(): string {
-//     return this._club_url;
-//   }
+  get add_post_reaction_url(): string {
+    return this._add_post_reaction_url;
+  }
+
+  private _add_comment_url = this._post_url + '/add_comment';
+
+  get add_comment_url(): string {
+    return this._add_comment_url;
+  }
+
+
+  private _add_comment_reaction_url = this._post_url + '/add_comment_reaction';
+
+  get add_comment_reaction_url(): string {
+    return this._add_comment_reaction_url;
+  }
+
   
-
 }

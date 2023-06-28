@@ -1,33 +1,85 @@
-
 <section class="content-item" id="posts">
-    <div class="container">   
-      <h3>New post:</h3>
-      <form #addForm="ngForm" class="form" (ngSubmit)="save()">
-        <div class="form-group">
-          <label for="content">Whats on your mind:</label>
-          <input class="form-control" id="content" name="content" [(ngModel)]="newPost.content"/>
-        </div>
-        <input class="btn btn-primary pull-right" type="submit" value="Add"/>
-      </form>
-    	<div class="row">
-        <div class="col-sm-8" *ngFor="let post of posts">   
-          <div class="media">
-            <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
-            <div class="media-body">
-                <h4 class="media-heading">{{post?.user?.username}}</h4>
-                <p>{{post?.content}}</p>
-                <ul class="list-unstyled list-inline media-detail pull-left">
-                    <li><i class="fa fa-calendar"></i>{{post.creationDate}}</li>
-                </ul>
-                <ul class="list-unstyled list-inline media-detail pull-right">
-                    <li class="">                        
-                      <a (click)="onDelete(post.id)" class="btn btn-primary" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
-                    </li>
-                    <!-- <li class=""><a href="">Comment</a></li> -->
-                </ul>
+  <div class="container">   
+    <h3>New post:</h3>
+    <form #addForm="ngForm" class="form" (ngSubmit)="save()">
+      <div class="form-group">
+        <label for="content">What's on your mind:</label>
+        <input class="form-control" id="content" name="content" [(ngModel)]="newPost.content"/>
+      </div>
+      <input class="btn btn-primary pull-right" type="submit" value="Add"/>
+    </form>
+    <div class="row">
+      <div class="col-sm-8" *ngFor="let post of posts">   
+        <div class="media">
+          <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
+          <div class="media-body">
+            <h4 class="media-heading">{{post?.user?.username}}</h4>
+            <p>{{post?.content}}</p>
+            <ul class="list-unstyled list-inline media-detail pull-left">
+              <li><i class="fa fa-calendar"></i>{{post.creationDate}}</li>
+            </ul>
+
+            <div class="post-reactions">
+              <ul class="list-unstyled list-inline media-detail pull-right">
+                <!-- <li>                        
+                  <a (click)="onDelete(post.id)" class="btn btn-primary" data-placement="top" data-original-title="Delete">
+                    <i class="fa fa-times"></i>
+                  </a>
+                </li> -->
+                <!-- <li class=""><a href="">Comment</a></li> -->
+                <li>
+                  <button (click)="onReact(post.id, ReactionType.Like)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Like">
+                    <i class="fa fa-thumbs-up icon-white"></i> {{ getReactionCount(post, ReactionType.Like) }}
+                  </button>
+                </li>
+                <li>
+                  <button (click)="onReact(post.id, ReactionType.Dislike)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Dislike">
+                    <i class="fa fa-thumbs-down icon-white"></i> {{ getReactionCount(post, ReactionType.Dislike) }}
+                  </button>
+                </li>
+                <li>
+                  <button (click)="onReact(post.id, ReactionType.Heart)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Heart">
+                    <i class="fa fa-heart icon-white"></i> {{ getReactionCount(post, ReactionType.Heart) }}
+                  </button>
+                </li>
+              </ul>
             </div>
+
+            <div>
+              <input type="text" [(ngModel)]="commentText[post.id]" class="form-control">
+              <button (click)="onAddComment(post.id, commentText[post.id])" class="btn btn-primary">Add Comment</button>
+            </div>
+
+            <div class="comments-section">
+              <div *ngFor="let comment of getComments(post)">
+                <h5>{{ comment.text }}</h5>
+                <p>Timestamp: {{ comment.timestamp }}</p>
+                <!-- Display reactions for each comment -->
+                <ul class="list-unstyled list-inline">
+                  <li>
+                    <button (click)="onReact(post.id, ReactionType.Like, comment.id)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Like">
+                      <i class="fa fa-thumbs-up icon-white"></i> {{ getReactionCount(comment, ReactionType.Like) }}
+                    </button>
+                  </li>
+                  <li>
+                    <button (click)="onReact(post.id, ReactionType.Dislike, comment.id)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Dislike">
+                      <i class="fa fa-thumbs-down icon-white"></i> {{ getReactionCount(comment, ReactionType.Dislike) }}
+                    </button>
+                  </li>
+                  <li>
+                    <button (click)="onReact(post.id, ReactionType.Heart, comment.id)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Heart">
+                      <i class="fa fa-heart icon-white"></i> {{ getReactionCount(comment, ReactionType.Heart) }}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            
           </div>
         </div>
       </div>
     </div>
+  </div>
 </section>
+
