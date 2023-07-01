@@ -22,6 +22,8 @@ import { TokenInterceptor } from './services/interceptor/TokenInterceptor';
 import { ProfileComponent } from './profile/profile.component';
 import { GroupPostsComponent } from './group-posts/group-posts.component';
 import { GroupListComponent } from './group-list/group-list.component';
+import { GroupFormComponent } from './group-form/group-form.component';
+import { PostListComponent } from './post-list/post-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { GroupListComponent } from './group-list/group-list.component';
     HomeComponent,
     ProfileComponent,
     GroupPostsComponent,
-    GroupListComponent
+    GroupListComponent,
+    GroupFormComponent,
+    PostListComponent
   ],
   imports: [
     BrowserModule,

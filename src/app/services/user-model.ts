@@ -10,6 +10,8 @@ export class UserModel {
     friendOf!: [];
     role!: string;
     groupAdmin!: [];
+    displayName!: string;
+    description!: string;
     deleted!: boolean;
 
 }

@@ -19,9 +19,7 @@ export class HomeComponent implements OnInit {
   };
   posts: PostModel[] = [];
   datepipe: DatePipe = new DatePipe('en-US');
-  ReactionType = ReactionType;
-  commentText: { [postId: number]: string } = {};
-
+  commentText: { [postId: number]: string } = {}; 
   constructor(private postService: PostService, private userService: UserService) { }
 
   ngOnInit(): void {
@@ -70,73 +68,7 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  onDelete(postId: number) {
-    this.postService.deletePost(postId).subscribe(
-      () => {
-        this.getPosts();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
-  }
-
-  onReact(postId: number, reactionType: ReactionType, commentId?: number) {
-    const reactionData: ReactionModel = {
-      reactionType,
-      timestamp: new Date().toISOString(),
-      userId: this.userService.currentUser.id,
-    };
-  
-    if (commentId) {
-      // React to a comment
-      this.postService.addCommentReaction(commentId, reactionData).subscribe(
-        () => {
-          this.getPosts();
-        },
-        (error: HttpErrorResponse) => {
-          alert(error.message);
-        }
-      );
-    } else {
-      // React to a post
-      this.postService.addPostReaction(postId, reactionData).subscribe(
-        () => {
-          this.getPosts();
-        },
-        (error: HttpErrorResponse) => {
-          alert(error.message);
-        }
-      );
-    }
-  }
-  
-  getReactionCount(post: PostModel | CommentModel, reactionType: ReactionType): number {
-    const reactions = post.reactions.filter((reaction) => reaction.reactionType === reactionType);
-    return reactions.length;
-  }
-
-
-
-  getComments(post: PostModel): CommentModel[] {
-    return post.comments;
-  }
-
-  onAddComment(postId: number, comment: string) {
-    const commentData: CommentModel = {
-      text: comment,
-      timestamp: new Date().toISOString(),
-      userId: this.userService.currentUser.id,
-      isDeleted: false,
-      reactions: [],
-    };
-    this.postService.addComment(postId, commentData).subscribe(
-      () => {
-        this.getPosts();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
+  onPostAdded() {
+    this.getPosts();
   }
 }

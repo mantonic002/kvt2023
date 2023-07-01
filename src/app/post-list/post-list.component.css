@@ -1,0 +1,123 @@
+/* post-list.component.css */
+  .row {
+    margin-top: 30px;
+  }
+
+  .media-heading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .media-detail {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0;
+  }
+  
+  .post-reactions {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .reaction-button {
+    margin-right: 0.5rem;
+  }
+  
+/* post-list.component.css */
+
+  .comment-input {
+    margin-top: 1rem;
+  }
+  
+  .comment-input .input-group {
+    width: 100%;
+  }
+  
+  .comment-input .input-group input{
+    margin-right: 4rem;
+  }
+
+  .comment-input .input-group-append {
+    position: relative;
+  }
+  
+  .comment-input .input-group-append button {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .comment-input .input-group-append button i {
+    margin-right: 0.5rem;
+  }
+  
+  
+  .comments-section {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+  }
+  
+  .comment {
+    border-left: 3px solid #ccc;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .comment-body {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Display reaction buttons horizontally */
+    .list-inline {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+
+  }
+  
+  
+  /* Adjust spacing between reaction buttons */
+    .list-inline li:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+  
+  /* Adjust spacing between comment sections */
+  .comments-section .comment:not(:last-child) {
+    margin-bottom: 1.5rem;
+  }
+
+  .dropdown.button-like {
+    margin-left: 50px;
+    appearance: none;
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 50px;
+  }
+  
+  .dropdown.button-like option {
+    padding: 8px 16px;
+  }
+  
+  .dropdown.button-like:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Change this to the desired focus style */
+  }
+  
+  
+  @media (max-width: 576px) {
+    .media-detail {
+      font-size: 0.8rem;
+    }
+  
+    .comment-input {
+      margin-top: 0.5rem;
+    }
+  }
+  

@@ -26,10 +26,35 @@ export class ConfigService {
     return this._signup_url;
   }
 
+  private _change_password_url = this._auth_url + '/change-password'
+
+  get change_password_url(): string {
+    return this._change_password_url;
+  }
+
+  private _update_user_url = this._auth_url + '/update'
+
+  get update_user_url(): string {
+    return this._update_user_url;
+  }
+
+
   private _group_url = this._api_url + '/group';
 
   get group_url(): string {
     return this._group_url;
+  }
+
+  private _update_group_url = this._group_url + '/update';
+
+  get update_group_url(): string {
+    return this._update_group_url;
+  }
+
+  private _delete_group_url = this._group_url + '/delete';
+
+  get delete_group_url(): string {
+    return this._delete_group_url;
   }
 
   private _add_post_to_group = this._group_url + '/add_post';
@@ -45,6 +70,11 @@ export class ConfigService {
 
   get posts_url(): string {
     return this._posts_url;
+  }
+  private _posts_by_group_url = this._post_url + "/by-group";
+  
+  get posts_by_group_url(): string {
+    return this._posts_by_group_url;
   }
 
   private _add_post_url = this._post_url + '/add';

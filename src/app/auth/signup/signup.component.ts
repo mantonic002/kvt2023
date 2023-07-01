@@ -37,7 +37,6 @@ export class SignupComponent implements OnInit{
   ngOnInit() {
     this.route.params
       .pipe(takeUntil(this.ngUnsubscribe))
-    // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.form = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
@@ -54,9 +53,7 @@ export class SignupComponent implements OnInit{
   }
 
   onSubmit() {
-    /**
-     * Innocent until proven guilty
-     */
+
     this.submitted = true;
 
     this.authService.signup(this.form.value)

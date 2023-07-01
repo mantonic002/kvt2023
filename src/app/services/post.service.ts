@@ -23,6 +23,10 @@ export class PostService {
     return this.apiService.get(this.config.posts_url);
   }
 
+  public getPostsByGroup(groupId: number): Observable<PostModel[]> {
+    return this.apiService.get(`${this.config.posts_by_group_url}/${groupId}`);
+  }
+
   public addPost(post: any): Observable<any> {
     return this.apiService.post(this.config.add_post_url, post);
   }

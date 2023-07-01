@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit{
       .subscribe((params: DisplayMessage) => {
         this.notification = params;
       });
-    // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.form = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
@@ -56,9 +55,6 @@ export class LoginComponent implements OnInit{
   }
 
   onSubmit() {
-    /**
-     * Innocent until proven guilty
-     */
     this.notification = undefined;
     this.submitted = true;
 

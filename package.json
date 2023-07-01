@@ -18,7 +18,7 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^5.3.0",
     "ngx-toastr": "^16.2.0",
     "ngx-webstorage": "^11.1.1",
     "ngx-webstorage-service": "^5.0.0",

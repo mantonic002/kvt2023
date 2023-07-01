@@ -11,38 +11,9 @@
   </div>
   <input class="btn btn-primary pull-right" type="submit" value="Add"/>
 </form>
+<div class="row">
+  <app-post-list [posts]="posts" [commentText]="commentText" (postAdded)="onPostAdded()"></app-post-list>
 
-<div *ngIf="posts">
-    <div *ngFor="let post of posts">
-    <div class="media">
-        <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
-        <div class="media-body">
-        <h4 class="media-heading">{{ post?.user?.username }}</h4>
-        <p>{{ post?.content }}</p>
-        <ul class="list-unstyled list-inline media-detail pull-left">
-            <li><i class="fa fa-calendar"></i>{{ post?.creationDate }}</li>
-        </ul>
-        <br>
-        <ul class="list-unstyled list-inline media-detail">
-            <li>
-            <button (click)="onReact(post.id, ReactionType.Like)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Like">
-                <i class="fa fa-thumbs-up icon-white"></i> {{ getReactionCount(post, ReactionType.Like) }}
-            </button>
-            </li>
-            <li>
-            <button (click)="onReact(post.id, ReactionType.Dislike)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Dislike">
-                <i class="fa fa-thumbs-down icon-white"></i> {{ getReactionCount(post, ReactionType.Dislike) }}
-            </button>
-            </li>
-            <li>
-            <button (click)="onReact(post.id, ReactionType.Heart)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Heart">
-                <i class="fa fa-heart icon-white"></i> {{ getReactionCount(post, ReactionType.Heart) }}
-            </button>
-            </li>
-        </ul>
-        </div>
-    </div>
-    </div>
 </div>
 
 

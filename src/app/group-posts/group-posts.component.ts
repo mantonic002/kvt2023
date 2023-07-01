@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services';
 import { GroupModel } from '../services/group-model';
 import { GroupService } from '../services/group.service';
-import { PostModel } from '../services/post-model';
+import { CommentModel, PostModel, ReactionModel, ReactionType } from '../services/post-model';
 import { PostService } from '../services/post.service';
 
 @Component({
@@ -22,10 +22,13 @@ export class GroupPostsComponent implements OnInit {
     creationDate: null
   };
 
+  commentText: { [postId: number]: string } = {};
+
 
   constructor(
     private route: ActivatedRoute,
     private groupService: GroupService,
+    private postService: PostService,
     private userService: UserService
   ) { }
 
@@ -40,7 +43,7 @@ export class GroupPostsComponent implements OnInit {
     this.groupService.getGroup(this.groupId).subscribe(
       response => {
         this.group = response;
-        this.posts = response.posts
+        this.getPosts(this.groupId);
       },
       error => {
         console.log(error);
@@ -48,6 +51,25 @@ export class GroupPostsComponent implements OnInit {
     );
   }
 
+
+  getPosts(id: number) {
+    this.postService.getPostsByGroup(id).subscribe(
+      (response: PostModel[]) => {
+        this.posts = response;
+        this.initializeCommentText();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+
+  initializeCommentText() {
+    this.posts.forEach((post) => {
+      this.commentText[post.id] = '';
+    });
+  }
 
   save() {
     
@@ -67,5 +89,10 @@ export class GroupPostsComponent implements OnInit {
         alert(error.message);
       }
     );
+  }
+
+
+  onPostAdded() {
+    this.loadGroup();
   }
 }

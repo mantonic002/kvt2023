@@ -10,7 +10,6 @@ import { ConfigService } from './config.service';
 })
 export class GroupService {
 
-
 constructor(
     private apiService: ApiService,
     private config: ConfigService,
@@ -18,6 +17,18 @@ constructor(
 
   getGroup(id: number): Observable<GroupModel> {
     return this.apiService.get(`${this.config.group_url}/${id}`);
+  }
+
+  createGroup(group: GroupModel): Observable<GroupModel> {
+    return this.apiService.post(this.config.group_url, group);
+  }
+
+  deleteGroup(groupId: number) {
+    return this.apiService.delete(`${this.config.delete_group_url}/${groupId}`);
+  }
+  
+  updateGroup(groupToEdit: GroupModel) {
+    return this.apiService.put(this.config.update_group_url, groupToEdit);
   }
 
   public getAllGroups(): Observable<GroupModel[]> {

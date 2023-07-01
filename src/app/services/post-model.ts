@@ -7,6 +7,7 @@ export class PostModel {
   user!: UserModel;
   reactions: ReactionModel[];
   comments: CommentModel[];
+  editing: boolean;
 }
 
 
@@ -19,7 +20,7 @@ export interface ReactionModel {
 export interface CommentModel {
   text: string;
   timestamp: string;
-  userId: number;
+  user: UserModel;
   isDeleted: boolean;
   reactions: ReactionModel[];
 }

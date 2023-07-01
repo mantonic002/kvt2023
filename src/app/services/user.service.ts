@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
 import {ConfigService} from './config.service';
 import {map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { UserModel } from './user-model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,10 @@ export class UserService {
     private apiService: ApiService,
     private config: ConfigService
   ) {
+  }
+
+  updateUser(user: UserModel): Observable<UserModel> {
+    return this.apiService.put(this.config.update_user_url, user)
   }
 
   getMyInfo() {
