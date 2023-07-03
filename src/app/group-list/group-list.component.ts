@@ -39,13 +39,23 @@ export class GroupListComponent implements OnInit {
     this.refreshGroups();
   }
 
-  canEditGroup(group: GroupModel): boolean {
+  isGroupAdmin(group: GroupModel): boolean {
     const currentUser = this.userService.currentUser;
-    return group.admins && group.admins.some(admin => admin.user.id === currentUser.id);
+    if(currentUser.role == 'ADMIN') {
+      return true;
+    }else {
+      return group.admins && group.admins.some(admin => admin.user.id === currentUser.id);
+    }
+  }
+
+  isAdmin(): boolean {
+    const currentUser = this.userService.currentUser;
+    return currentUser.role == 'ADMIN'
+
   }
 
   editGroup(group: GroupModel) {
-    if (this.canEditGroup(group)) {
+    if (this.isGroupAdmin(group)) {
       this.groupToEdit = group;
       this.showEditForm = true;
     } else {
@@ -55,8 +65,6 @@ export class GroupListComponent implements OnInit {
   }
 
   updateGroup() {
-    console.log(this.groupToEdit.admins);
-
     this.groupService.updateGroup(this.groupToEdit).subscribe(
       (updatedGroup: GroupModel) => {
         this.refreshGroups();
@@ -74,15 +82,64 @@ export class GroupListComponent implements OnInit {
   }
 
   deleteGroup(groupId: number) {
-    if (confirm('Are you sure you want to delete this group?')) {
-      this.groupService.deleteGroup(groupId).subscribe(
-        () => {
-          this.groups = this.groups.filter(group => group.id !== groupId);
-        },
-        (error: HttpErrorResponse) => {
-          alert(error.message);
+    if (this.isAdmin) {
+      if (confirm('Are you sure you want to delete this group?')) {
+        const reason = prompt('Please enter the reason for deleting the group:');
+        if (reason !== null && reason !== '') {
+          if (confirm('Are you sure you want to delete this group?')) {
+            this.groupService.deleteGroup(groupId, reason).subscribe(
+              () => {
+                this.groups = this.groups.filter(group => group.id !== groupId);
+              },
+              (error: HttpErrorResponse) => {
+                alert(error.message);
+              }
+            );
+          }
+        } else {
+          alert('Please provide a reason for deleting the group.');
         }
-      );
+      }
     }
+  } 
+
+  getGroupJoinRequests(group: GroupModel) {
+    console.log(group);
+    return group.groupRequests;
   }
+
+  sendJoinRequest(group: GroupModel) {
+    this.groupService.sendJoinRequest(group.id).subscribe(
+      () => {
+        group.joinRequestSent = true;
+        alert('Join request sent successfully.');
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  approveGroupJoinRequest(groupId: number, requestId: number) {
+    this.groupService.approveGroupJoinRequest(groupId, requestId).subscribe(
+      () => {
+        alert('Group join request approved successfully.');
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+  
+  rejectGroupJoinRequest(groupId: number, requestId: number) {
+    this.groupService.rejectGroupJoinRequest(groupId, requestId).subscribe(
+      () => {
+        alert('Group join request rejected successfully.');
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+  
 }

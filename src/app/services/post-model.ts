@@ -17,11 +17,13 @@ export interface ReactionModel {
   userId: number;
 }
 
-export interface CommentModel {
+export class CommentModel {
+  id?: number
   text: string;
   timestamp: string;
   user: UserModel;
   isDeleted: boolean;
+  childComments: CommentModel[];
   reactions: ReactionModel[];
 }
 

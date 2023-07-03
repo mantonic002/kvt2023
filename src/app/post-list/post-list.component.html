@@ -1,85 +1,135 @@
 <div class="row">
-    <div class="col-sm-8" *ngFor="let post of posts">   
-      <div class="media">
-        <div class="media-body">
-          <h4 class="media-heading">{{ post?.user?.displayName }}</h4>
+  <div class="col-sm-8" *ngFor="let post of posts">
+    <div class="media">
+      <div class="media-body">
+        <h4 class="media-heading">{{ post?.user?.displayName }}</h4>
 
-          <div *ngIf="!post.editing">
-            <p>{{ post.content }}</p>
+        <div *ngIf="!post.editing">
+          <p>{{ post.content }}</p>
+        </div>
+
+        <div *ngIf="post.editing">
+          <textarea [(ngModel)]="post.content"></textarea>
+          <button (click)="editPost(post)">Save</button>
+        </div>
+
+        <p class="media-detail"><i class="fa fa-calendar"></i> {{ post.creationDate }}</p>
+
+        <div class="post-reactions">
+          <ul class="list-unstyled list-inline media-detail">
+            <li>
+              <button (click)="onReact(post.id, ReactionType.Like)" class="btn btn-primary reaction-button"
+                data-placement="top" data-original-title="Like">
+                <i class="fa fa-thumbs-up icon-white"></i> {{ getReactionCount(post, ReactionType.Like) }}
+              </button>
+            </li>
+            <li>
+              <button (click)="onReact(post.id, ReactionType.Dislike)" class="btn btn-primary reaction-button"
+                data-placement="top" data-original-title="Dislike">
+                <i class="fa fa-thumbs-down icon-white"></i> {{ getReactionCount(post, ReactionType.Dislike) }}
+              </button>
+            </li>
+            <li>
+              <button (click)="onReact(post.id, ReactionType.Heart)" class="btn btn-primary reaction-button"
+                data-placement="top" data-original-title="Heart">
+                <i class="fa fa-heart icon-white"></i> {{ getReactionCount(post, ReactionType.Heart) }}
+              </button>
+            </li>
+            <li>
+              <select class="dropdown button-like" *ngIf="post.user.id === userService.currentUser.id"
+                (change)="handleAction($event.target.value, post.id)">
+                <option value="" disabled selected hidden>...</option>
+                <option value="edit">Edit</option>
+                <option value="delete">Delete</option>
+              </select>
+            </li>
+          </ul>
+        </div>
+
+        <div class="comment-input">
+          <div class="input-group">
+            <input type="text" [(ngModel)]="commentText[post.id]" class="form-control">
+            <div class="input-group-append">
+              <button (click)="onAddComment(post.id, commentText[post.id])" class="btn btn-primary">
+                <i class="fa fa-comment"></i>
+              </button>
+            </div>
           </div>
+        </div>
 
-          <div *ngIf="post.editing">
-            <textarea [(ngModel)]="post.content"></textarea>
-            <button (click)="editPost(post)">Save</button>
-          </div>
-
-          <p class="media-detail"><i class="fa fa-calendar"></i> {{ post.creationDate }}</p>
-  
-          <div class="post-reactions">
+        <div class="comments-section">
+          <div *ngFor="let comment of post.comments" class="comment">
+            <h5 class="comment-body">{{ comment?.user.displayName }}</h5>
+            <p class="media-detail"> {{ comment?.text }} </p>
+            <p class="media-detail"><i class="fa fa-calendar"></i> {{ comment?.timestamp }}</p>
             <ul class="list-unstyled list-inline media-detail">
               <li>
-                <button (click)="onReact(post.id, ReactionType.Like)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Like">
-                  <i class="fa fa-thumbs-up icon-white"></i> {{ getReactionCount(post, ReactionType.Like) }}
+                <button (click)="onReact(post.id, ReactionType.Like, comment.id)"
+                  class="btn btn-primary reaction-button" data-placement="top" data-original-title="Like">
+                  <i class="fa fa-thumbs-up icon-white"></i> {{ getReactionCount(comment, ReactionType.Like) }}
                 </button>
               </li>
               <li>
-                <button (click)="onReact(post.id, ReactionType.Dislike)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Dislike">
-                  <i class="fa fa-thumbs-down icon-white"></i> {{ getReactionCount(post, ReactionType.Dislike) }}
+                <button (click)="onReact(post.id, ReactionType.Dislike, comment.id)"
+                  class="btn btn-primary reaction-button" data-placement="top" data-original-title="Dislike">
+                  <i class="fa fa-thumbs-down icon-white"></i> {{ getReactionCount(comment, ReactionType.Dislike) }}
                 </button>
               </li>
               <li>
-                <button (click)="onReact(post.id, ReactionType.Heart)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Heart">
-                  <i class="fa fa-heart icon-white"></i> {{ getReactionCount(post, ReactionType.Heart) }}
+                <button (click)="onReact(post.id, ReactionType.Heart, comment.id)"
+                  class="btn btn-primary reaction-button" data-placement="top" data-original-title="Heart">
+                  <i class="fa fa-heart icon-white"></i> {{ getReactionCount(comment, ReactionType.Heart) }}
                 </button>
-              </li>
-              <li>
-                <select class="dropdown button-like" *ngIf="post.user.id === userService.currentUser.id" (change)="handleAction($event.target.value, post.id)">
-                  <option value="" disabled selected hidden>...</option>
-                  <option value="edit">Edit</option>
-                  <option value="delete">Delete</option>
-                </select>
               </li>
             </ul>
-          </div>
-  
-        <div class="comment-input">
-            <div class="input-group">
-                <input type="text" [(ngModel)]="commentText[post.id]" class="form-control">
-                <div class="input-group-append">
-                    <button (click)="onAddComment(post.id, commentText[post.id])" class="btn btn-primary">
-                    <i class="fa fa-comment"></i>
+
+            <!-- Add comments to comments -->
+            <div class="child-comments-section">
+              <div *ngFor="let childComment of getChildComments(comment)" class="comment child-comment">
+                <h5 class="comment-body">{{ childComment?.user.displayName }}</h5>
+                <p class="media-detail"> {{ childComment?.text }} </p>
+                <p class="media-detail"><i class="fa fa-calendar"></i> {{ childComment?.timestamp }}</p>
+                <ul class="list-unstyled list-inline media-detail">
+                  <li>
+                    <button (click)="onReact(post.id, ReactionType.Like, childComment.id)"
+                      class="btn btn-primary reaction-button" data-placement="top" data-original-title="Like">
+                      <i class="fa fa-thumbs-up icon-white"></i>
+                      {{ getReactionCount(childComment, ReactionType.Like) }}
                     </button>
+                  </li>
+                  <li>
+                    <button (click)="onReact(post.id, ReactionType.Dislike, childComment.id)"
+                      class="btn btn-primary reaction-button" data-placement="top" data-original-title="Dislike">
+                      <i class="fa fa-thumbs-down icon-white"></i>
+                      {{ getReactionCount(childComment, ReactionType.Dislike) }}
+                    </button>
+                  </li>
+                  <li>
+                    <button (click)="onReact(post.id, ReactionType.Heart, childComment.id)"
+                      class="btn btn-primary reaction-button" data-placement="top" data-original-title="Heart">
+                      <i class="fa fa-heart icon-white"></i>
+                      {{ getReactionCount(childComment, ReactionType.Heart) }}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Add input for adding comments to comments -->
+            <div class="child-comment-input">
+              <div class="input-group">
+                <input type="text" [(ngModel)]="childCommentText[comment.id]" class="form-control">
+                <div class="input-group-append">
+                  <button (click)="onAddChildComment(comment.id, childCommentText[comment.id])" class="btn btn-primary">
+                    <i class="fa fa-comment"></i>
+                  </button>
                 </div>
+              </div>
             </div>
-        </div>
-  
-  
-          <div class="comments-section">
-            <div *ngFor="let comment of post.comments" class="comment">
-              <h5 class="comment-body">{{ comment?.user.displayName }}</h5>
-              <p class="media-detail"> {{ comment?.text }} </p>
-              <p class="media-detail"><i class="fa fa-calendar"></i> {{ comment?.timestamp }}</p>
-              <ul class="list-unstyled list-inline media-detail">
-                <li>
-                  <button (click)="onReact(post.id, ReactionType.Like, comment.id)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Like">
-                    <i class="fa fa-thumbs-up icon-white"></i> {{ getReactionCount(comment, ReactionType.Like) }}
-                  </button>
-                </li>
-                <li>
-                  <button (click)="onReact(post.id, ReactionType.Dislike, comment.id)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Dislike">
-                    <i class="fa fa-thumbs-down icon-white"></i> {{ getReactionCount(comment, ReactionType.Dislike) }}
-                  </button>
-                </li>
-                <li>
-                  <button (click)="onReact(post.id, ReactionType.Heart, comment.id)" class="btn btn-primary reaction-button" data-placement="top" data-original-title="Heart">
-                    <i class="fa fa-heart icon-white"></i> {{ getReactionCount(comment, ReactionType.Heart) }}
-                  </button>
-                </li>
-              </ul>
-            </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

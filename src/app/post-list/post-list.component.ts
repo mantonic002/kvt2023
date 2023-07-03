@@ -14,6 +14,7 @@ export class PostListComponent implements OnInit {
   @Input() commentText: { [postId: number]: string };
   @Output() postAdded: EventEmitter<void> = new EventEmitter<void>(); // Event emitter for post addition
   ReactionType = ReactionType;
+  childCommentText: {[commentId: number]: string} = {};
 
   constructor(private postService: PostService, private userService: UserService) {}
 
@@ -24,6 +25,9 @@ export class PostListComponent implements OnInit {
   initializeCommentText() {
     this.posts.forEach((post) => {
       this.commentText[post.id] = '';
+      post.comments.forEach((comment) => {
+        this.childCommentText[comment.id] = '';
+      })
     });
   }
 
@@ -33,6 +37,8 @@ export class PostListComponent implements OnInit {
       timestamp: new Date().toISOString(),
       userId: this.userService.currentUser.id,
     };
+    console.log(this.posts);
+    
   
     if (commentId) {
       this.postService.addCommentReaction(commentId, reactionData).subscribe(
@@ -64,6 +70,10 @@ export class PostListComponent implements OnInit {
     return post.comments;
   }
 
+  getChildComments(comment: CommentModel): CommentModel[] {
+    return comment.childComments || [];
+  }
+
   onAddComment(postId: number, comment: string) {
     const commentData: CommentModel = {
       text: comment,
@@ -71,8 +81,28 @@ export class PostListComponent implements OnInit {
       user: this.userService.currentUser,
       isDeleted: false,
       reactions: [],
+      childComments: [],
     };
     this.postService.addComment(postId, commentData).subscribe(
+      () => {
+        this.getPosts();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  onAddChildComment(commentId: number, comment: string) {
+    const commentData: CommentModel = {
+      text: comment,
+      timestamp: new Date().toISOString(),
+      user: this.userService.currentUser,
+      isDeleted: false,
+      reactions: [],
+      childComments: [],
+    };
+    this.postService.addChildComment(commentId, commentData).subscribe(
       () => {
         this.getPosts();
       },

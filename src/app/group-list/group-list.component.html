@@ -5,13 +5,24 @@
 <ul>
   <li *ngFor="let group of groups">
     <div class="group-info">
-      <h3><a routerLink="/groups/{{ group.id }}/posts">{{ group.name }}</a></h3>
+      <h3>{{ group.name }}</h3>
       <p>{{ group.description }}</p>
       <p class="media-detail"><i class="fa fa-calendar"></i> {{ group.creationDate }}</p>
     </div>
     <div class="group-actions">
-      <button class="btn btn-primary" (click)="editGroup(group)">Edit</button>
-      <button class="btn btn-danger" (click)="deleteGroup(group.id)">Delete</button>
+      <button *ngIf="isGroupAdmin(group)" class="btn btn-primary" (click)="editGroup(group)">Edit</button>
+      <button *ngIf="isAdmin()" class="btn btn-danger" (click)="deleteGroup(group.id)">Delete</button>
+      <button *ngIf="!group.joinRequestSent" class="btn btn-success" (click)="sendJoinRequest(group)">Join Group</button>
+      <span *ngIf="group.joinRequestSent" class="text-info">Join request sent</span>
+
+      <div *ngIf="isGroupAdmin(group)">
+        <button class="btn btn-primary" (click)="getGroupJoinRequests(group)">Join Requests</button>
+        <div *ngFor="let request of group.groupRequests">
+          <p>{{ request.user.displayName }} - {{ request.approved }}</p>
+          <button class="btn btn-success" (click)="approveGroupJoinRequest(group.id, request.id)">Approve</button>
+          <button class="btn btn-danger" (click)="rejectGroupJoinRequest(group.id, request.id)">Reject</button>
+        </div>
+      </div>
     </div>
   </li>
 </ul>

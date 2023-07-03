@@ -45,6 +45,12 @@ export class ConfigService {
     return this._group_url;
   }
 
+  private _groups_user_url = this._group_url + '/user';
+
+  get groups_user_url(): string {
+    return this._groups_user_url;
+  }
+
   private _update_group_url = this._group_url + '/update';
 
   get update_group_url(): string {
@@ -116,6 +122,13 @@ export class ConfigService {
 
   get add_comment_url(): string {
     return this._add_comment_url;
+  }
+
+
+  private _add_child_comment_url = this._post_url + '/add_child_comment';
+
+  get add_child_comment_url(): string {
+    return this._add_child_comment_url;
   }
 
 

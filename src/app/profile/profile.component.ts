@@ -1,5 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AuthService, UserService } from '../services';
+import { GroupModel } from '../services/group-model';
+import { GroupService } from '../services/group.service';
 import { UserModel } from '../services/user-model';
 
 @Component({
@@ -15,11 +18,25 @@ export class ProfileComponent {
   newPassword: string = '';
   confirmNewPassword: string = '';
   passwordChangeError: string;
+  groups: GroupModel[];
 
-  constructor(private authService: AuthService, private userService: UserService) { }
+
+  constructor(private groupService: GroupService, private authService: AuthService, private userService: UserService) { }
 
   ngOnInit() {
     this.user = this.userService.currentUser;
+    this.loadGroups();
+  }
+
+  loadGroups() {
+    this.groupService.getGroupsByUser(this.user.id).subscribe(
+      (response: GroupModel[]) => {
+        this.groups = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
   }
 
   togglePasswordForm() {

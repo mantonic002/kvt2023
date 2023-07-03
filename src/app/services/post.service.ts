@@ -51,5 +51,8 @@ export class PostService {
     return this.apiService.post(`${this.config.add_comment_url}/${postId}`, comment);
   }
   
+  public addChildComment(commentId: number, comment: CommentModel): Observable<any> {
+    return this.apiService.post(`${this.config.add_child_comment_url}/${commentId}`, comment);
+  }
   
 }

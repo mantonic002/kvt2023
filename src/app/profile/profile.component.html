@@ -10,6 +10,7 @@
             <div *ngIf="user.description">
               <p>{{ user.description }}</p>
             </div>
+
             <button type="button" class="btn btn-primary" (click)="toggleEditForm()">Edit</button>
           </div>
         </div>
@@ -65,5 +66,12 @@
             <button type="submit" class="btn btn-primary">Save Changes</button>
             </div>
         </form>
+
+        <ul>
+          <li *ngFor="let group of groups">
+            <h3><a routerLink="/groups/{{ group.id }}/posts">{{ group.name }}</a></h3>
+            <p>{{ group.description }}</p>
+          </li>
+        </ul>
   </div>
   
